@@ -12,24 +12,78 @@ function randomNumber (min, max) {
 
 //inserire i numeri generati in un array
 var number;
-var extractNumber = [];
+var pcNumbers = [];
 
 for (var i = 0; i < 5; i++) {
     number = randomNumber (1, 100);
     //console.log(number);
-    extractNumber.push(number);
-    //console.log(extractNumber);
+    pcNumbers.push(number);
+    //console.log(pcNumbers);
 }
-console.log(extractNumber);
+console.log(pcNumbers);
 
 //mostrare l'array in un alert
-alert(extractNumber);
+alert(pcNumbers);
 
-//Dopo 30 secondi l'utente deve inserire, uno alla volta, i numeri che ha visto precedentemente, tramite il prompt().
+//Dopo 30 secondi 
+var timer = 31;
 
-rememberNumbers = prompt('Inserisci i 5 numeri che hai memorizzato');
-userNumbers = rememberNumbers.split(" ");
-console.log(rememberNumbers);
-console.log(userNumbers);
+var intervallo = setInterval ( function(){
+    if (timer === 0) {
+        clearInterval(intervallo)
+        //l'utente deve inserire, uno alla volta, i numeri che ha visto precedentemente, tramite il prompt().
+        var userNumbers;
+        do {var rememberNumbers = prompt('Inserisci i 5 numeri che hai memorizzato');
+            userNumbers = rememberNumbers.split(' ');
+            if (userNumbers.length !== 5) {
+                alert(
+                    `
+                    Devi inserire 5 numeri!! Ne hai inseriti ${userNumbers.length}...
+                    Numeri inseriti: ${userNumbers}
+                    `
+                );
+            }
+        } while (userNumbers.length !== 5);
 
+        console.log(rememberNumbers);
+        console.log(userNumbers);
+
+        //il software dice quanti e quali dei numeri da indovinare sono stati individuati.
+        var matchNumbers = [];
+
+        for (var i = 0; i < 5; i++) {
+            var compareNumber = Number(userNumbers[i]);
+            console.log(compareNumber);
+
+            if (pcNumbers.includes(compareNumber)) {
+                matchNumbers.push(compareNumber)
+            }
+
+        }
+
+        console.log(matchNumbers);
+
+        alert(
+            `
+            Hai indovinato ${matchNumbers.length} su 5 numeri: ${matchNumbers}
+            i numeri erano: ${pcNumbers}
+            `
+        );
+
+    }else {
+        timer--;
+    }
+
+    var countdownEl = document.querySelector('.countdown');
+    countdownEl.innerHTML = timer;
+
+    countdownEl.style.color = "red";
+
+    if (timer < 6) {
+        countdownEl.style.color = "green";
+    } else if (timer < 16) {
+        countdownEl.style.color = "orange";
+    }
+
+}, 1000)
 
